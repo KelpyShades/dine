@@ -1,139 +1,480 @@
-# dine
+# 🍽️ Dine - Multi-Vendor Food Delivery App
 
-A new Flutter project.
+A comprehensive Flutter application that connects customers with multiple food vendors for seamless food ordering and delivery management.
 
-## Getting Started
+## 📱 App Overview
 
-This project is a starting point for a Flutter application.
+Dine is a sophisticated food delivery platform that supports multiple vendors, real-time order management, and comprehensive analytics. The app consists of two main interfaces:
 
-A few resources to get you started if this is your first Flutter project:
+- **Customer App**: Browse menus, place orders, and track delivery
+- **Vendor Dashboard**: Manage orders, menu items, and view business analytics
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## ✨ Key Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 🛒 Customer Features
 
-🚫 Remove These "Nice-to-Haves"
-~~Order Verification & Fraud Prevention~~
-~~SMS OTP~~ - Too complex, just take orders at face value
-~~Address validation~~ - Let drivers figure it out
-~~Duplicate prevention~~ - Not worth the complexity initially
-~~Phone verification~~ - Just format validation
-~~Advanced Customer Communication~~
-~~SMS status updates~~ - Vendor calls when ready, that's it
-~~Order tracking~~ - "Your order is being prepared" is enough
-~~Backup contacts~~ - One phone number, keep it simple
-~~Data Management Features~~
-~~Order history lookup~~ - No accounts = no history needed
-~~Customer preferences~~ - They can reorder manually if they want
-~~Order analytics~~ - Focus on taking orders first
-✅ Minimal Viable COD App Flow
-Customer: Browse menu → Add to cart
-Customer: Enter name, phone, address → Submit order
-App: Show "Order received! Order #123. Vendor will call you."
-Done. Vendor handles everything from there.
+- **Multi-Vendor Browsing**: Browse food items from multiple vendors in one app
+- **Smart Search**: Search across vendors and menu items with unified results
+- **Category Filtering**: Filter by food categories (meals, drinks, desserts, snacks)
+- **Shopping Cart**: Add items from different vendors to cart
+- **Order Placement**: Simple order form with delivery options
+- **Real-time Updates**: Live order status updates
 
-Order Placement:
-Menu browsing
-Cart functionality
-Simple form: Name, Phone, Address
-Order submission
-Order Management (Vendor Side):
-List of incoming orders
-Mark order as "preparing" or "completed"
-Customer phone number to call
-Customer Confirmation:
-Order number
-"We'll call you soon" message
-Maybe estimated time (30-45 minutes)
-💡 This Removes All Complexity:
-No accounts, no verification, no tracking, no notifications, no history, no fraud prevention.
-Just: Order → Confirmation → Phone Call → Delivery → Payment
-The beauty is in the simplicity. Customers get food, vendors get orders, money changes hands. Everything else is operational overhead that can be handled outside the app.
-Keep it stupid simple. You can always add features later if the basic model works.
+### 🏪 Vendor Features
 
+- **Vendor Authentication**: Secure code-based login system
+- **Menu Management**: Add, edit, and manage menu items with images
+- **Order Management**: View and update order statuses in real-time
+- **Business Analytics**: Comprehensive dashboard with revenue tracking
+- **Order Statistics**: Track pending, ready, and completed orders
+- **Popular Items**: View top-selling menu items
 
-You're thinking in the right direction! Let me break this down to the **absolute simplest** approach:
+### 🔄 Real-time Features
 
-## **🎯 Minimal Order Identification**
+- **Live Updates**: Supabase real-time subscriptions for instant updates
+- **Order Synchronization**: All clients receive real-time order changes
+- **Status Updates**: Instant order status changes across devices
 
-### **Option 1: Just Order Number (Simplest)**
-- Give customer order number: `#DIN-1234`
-- That's it. No lookup needed.
-- If they need to check status, they call the restaurant with their order number
+## 🏗️ Architecture
 
-### **Option 2: Simple Order Lookup (Slightly Better)**
-- **Order Number + Phone Number** combo for lookup
-- One simple page: "Enter order # and phone to check status"
-- No accounts, just these two pieces of info
+### Tech Stack
 
-## **🤔 Order Status: Call vs App**
+- **Frontend**: Flutter (Dart)
+- **Backend**: Supabase (PostgreSQL + Real-time)
+- **State Management**: Riverpod with AsyncNotifier
+- **Image Storage**: Supabase Storage
+- **Authentication**: Custom vendor code system
 
-### **Phone Call is Actually Better Because:**
-- **Personal touch** - builds customer relationship
-- **Real-time updates** - "Your food will be ready in 10 minutes"
-- **Address clarification** - can confirm location details
-- **Zero app complexity** - no status system to build
-- **Works for everyone** - no need to check app
-
-### **But if You Want Simple Status:**
-Just **3 status levels**:
-- ✅ "Order Received" 
-- 🍳 "Being Prepared"
-- 🚗 "Out for Delivery"
-
-## **💡 My Recommendation: Keep It Phone-Based**
-
-**Here's the dead simple flow:**
-
-1. **Customer orders** → Gets order number `#DIN-1234`
-2. **Email confirmation:** "Order #DIN-1234 received! We'll call you in 15-20 minutes."
-3. **Vendor calls** when food is ready/being delivered
-4. **Done.**
-
-## **📧 Simple Email Setup**
+### Project Structure
 
 ```
-Subject: Order Confirmation #DIN-1234
-
-Hi [Name],
-
-Your order has been received!
-
-Order: #DIN-1234
-Items: [list items]
-Total: ₱[amount]
-Delivery to: [address]
-
-We'll call you at [phone] in 15-20 minutes with updates.
-
-Thanks for ordering with Dine!
+lib/
+├── components/
+│   ├── store/           # Customer-facing screens
+│   │   ├── views/       # Store, cart, order forms
+│   │   ├── data/        # Models, repositories, data sources
+│   │   └── provider/    # Riverpod providers
+│   └── vendor/          # Vendor dashboard
+│       ├── views/       # Analytics, orders, menu management
+│       └── data/        # Vendor-specific data handling
+├── core/                # Core services and utilities
+│   ├── services/        # Storage, real-time, error handling
+│   ├── theme/           # App styling and colors
+│   └── router/          # Navigation and routing
+└── main.dart           # App entry point
 ```
 
-## **🗄️ Database: Just Store Everything**
+### Data Layer Architecture
 
 ```
-Orders Table:
-- order_id
-- order_number (DIN-1234)
-- customer_name  
-- customer_phone
-- customer_address
-- items (JSON)
-- total_amount
-- status (received/preparing/delivered)
-- created_at
+UI Layer (Screens)
+    ↓
+Provider Layer (Riverpod)
+    ↓
+Repository Layer (Business Logic)
+    ↓
+DataSource Layer (API Calls)
+    ↓
+Supabase Backend
 ```
 
-**No complex lookup needed.** Vendor sees all orders in their dashboard, customer gets email confirmation, everyone's happy.
+## 🚀 Getting Started
 
-**The phone call handles everything else.** Keep the app for ordering, let human interaction handle the rest.
+### Prerequisites
 
-// Each vendor sees only their items
-vendor1_items = order.items.where((item) => item['vendorId'] == 'vendor1')
-// Result: [Pizza, Pasta]
+- Flutter SDK (3.0+)
+- Dart SDK (3.0+)
+- Supabase account and project
+- Android Studio / VS Code
 
-vendor2_items = order.items.where((item) => item['vendorId'] == 'vendor2')  
-// Result: [Burger]
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/dine.git
+   cd dine
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Configure Supabase**
+
+   - Create a new Supabase project
+   - Get your project URL and anon key
+   - Update `lib/core/constants.dart` with your credentials
+
+4. **Set up environment variables**
+
+   ```dart
+   // lib/core/constants.dart
+   class SupabaseConstants {
+     static const String url = 'YOUR_SUPABASE_URL';
+     static const String anonKey = 'YOUR_SUPABASE_ANON_KEY';
+   }
+   ```
+
+5. **Run the app**
+   ```bash
+   flutter run
+   ```
+
+## 🗄️ Database Schema
+
+### Tables Structure
+
+#### Vendors Table
+
+```sql
+vendors (
+  id: uuid PRIMARY KEY,
+  name: text,
+  description: text,
+  location: text,
+  image_url: text,
+  is_open: boolean,
+  code: text UNIQUE,
+  tags: text[],
+  created_at: timestamp
+)
+```
+
+#### Menu Items Table
+
+```sql
+menu_items (
+  id: uuid PRIMARY KEY,
+  vendor_id: uuid REFERENCES vendors(id),
+  name: text,
+  description: text,
+  price: decimal,
+  category: text,
+  image_url: text,
+  is_available: boolean,
+  tags: text[],
+  created_at: timestamp
+)
+```
+
+#### Orders Table
+
+```sql
+orders (
+  id: uuid PRIMARY KEY,
+  order_number: text,
+  vendor_ids: uuid[],
+  customer_name: text,
+  customer_phone: text,
+  customer_location: text,
+  notes: text,
+  items: jsonb,
+  order_statuses: jsonb,
+  created_at: timestamp,
+  total: text,
+  delivery_option: text
+)
+```
+
+## 🔧 Configuration
+
+### Supabase Setup
+
+1. **Enable Real-time**
+
+   ```sql
+   -- Enable real-time for all tables
+   alter publication supabase_realtime add table vendors;
+   alter publication supabase_realtime add table menuItems;
+   alter publication supabase_realtime add table orders;
+   ```
+
+2. **Row Level Security (RLS)**
+
+   ```sql
+   -- Enable RLS
+   alter table vendors enable row level security;
+   alter table menuItems enable row level security;
+   alter table orders enable row level security;
+   ```
+
+3. **Storage Policies**
+   ```sql
+   -- Allow public read access to images
+   create policy "Public read access" on storage.objects
+   for select using (bucket_id = 'images');
+   ```
+
+### Environment Configuration
+
+```dart
+// lib/core/constants.dart
+class AppConfig {
+  static const bool isProduction = false;
+  static const String appName = 'Dine';
+  static const String appVersion = '1.0.0';
+}
+```
+
+## 📱 App Flow
+
+### Customer Journey
+
+1. **Browse**: View available vendors and menu items
+2. **Search**: Find specific foods or vendors
+3. **Filter**: Narrow down by categories
+4. **Add to Cart**: Select items from multiple vendors
+5. **Checkout**: Fill order form with delivery details
+6. **Confirm**: Receive order confirmation and number
+7. **Track**: Monitor order status updates
+
+### Vendor Journey
+
+1. **Login**: Authenticate with vendor code
+2. **Dashboard**: View order overview and analytics
+3. **Orders**: Manage incoming orders and update statuses
+4. **Menu**: Add/edit menu items and manage availability
+5. **Analytics**: Monitor business performance and revenue
+
+## 🎨 UI Components
+
+### Design System
+
+- **Colors**: Consistent color palette with primary orange theme
+- **Typography**: Clear hierarchy with readable fonts
+- **Spacing**: Consistent 8px grid system
+- **Shadows**: Subtle elevation for depth
+- **Gradients**: Modern gradient backgrounds for key sections
+
+### Key Components
+
+- **FeaturedFoodCard**: Hero food item display
+- **CategoryCard**: Food category selection
+- **ItemCard**: Individual menu item display
+- **OrderCard**: Order information display
+- **StatCard**: Analytics metric display
+
+## 🔐 Security Features
+
+### Authentication
+
+- **Vendor Codes**: Unique codes for vendor access
+- **No Customer Accounts**: Simplified customer experience
+- **Secure API**: Supabase RLS policies
+
+### Data Protection
+
+- **Input Validation**: Server-side validation for all inputs
+- **SQL Injection Prevention**: Parameterized queries
+- **Image Upload Security**: File type and size validation
+
+## 📊 Analytics & Reporting
+
+### Vendor Analytics
+
+- **Revenue Tracking**: Accurate vendor-specific revenue calculation
+- **Order Statistics**: Pending, ready, and completed order counts
+- **Popular Items**: Top-selling menu items analysis
+- **Category Breakdown**: Menu category distribution
+- **Recent Performance**: Latest order activity
+
+### Business Insights
+
+- **Total Revenue**: Sum of completed orders (vendor portion only)
+- **Average Order Value**: Mean order value for vendor items
+- **Order Trends**: Historical order data analysis
+- **Menu Performance**: Item popularity and sales metrics
+
+## 🚀 Performance Features
+
+### Optimization
+
+- **Local Filtering**: Client-side filtering for better performance
+- **Image Caching**: Efficient image loading and caching
+- **Lazy Loading**: Load data as needed
+- **Real-time Updates**: Efficient subscription management
+
+### Scalability
+
+- **Provider Architecture**: Scalable state management
+- **Repository Pattern**: Clean separation of concerns
+- **Async Operations**: Non-blocking UI operations
+- **Error Handling**: Graceful error recovery
+
+## 🧪 Testing
+
+### Test Coverage
+
+- **Unit Tests**: Core business logic testing
+- **Widget Tests**: UI component testing
+- **Integration Tests**: End-to-end flow testing
+
+### Running Tests
+
+```bash
+# Run all tests
+flutter test
+
+# Run specific test file
+flutter test test/widget_test.dart
+
+# Run with coverage
+flutter test --coverage
+```
+
+## 📦 Build & Deployment
+
+### Android Build
+
+```bash
+# Build APK
+flutter build apk --release
+
+# Build App Bundle
+flutter build appbundle --release
+```
+
+### iOS Build
+
+```bash
+# Build iOS app
+flutter build ios --release
+```
+
+### Web Build
+
+```bash
+# Build web version
+flutter build web --release
+```
+
+## 🔄 State Management
+
+### Riverpod Architecture
+
+- **AsyncNotifier**: For async data operations
+- **StateProvider**: For simple state management
+- **Provider**: For computed values
+- **Family Provider**: For parameterized providers
+
+### Key Providers
+
+```dart
+// Data providers
+final menuItemProvider = AsyncNotifierProvider<MenuItemNotifier, List<MenuItem>>();
+final vendorProvider = AsyncNotifierProvider<VendorNotifier, List<Vendor>>();
+final orderProvider = AsyncNotifierProvider<OrderNotifier, List<Order>>();
+
+// Computed providers
+final filteredMenuItemsProvider = Provider<List<MenuItem>>();
+final vendorOrdersProvider = Provider.family<List<Order>, String>();
+final vendorOrderStatsProvider = Provider.family<Map<String, int>, String>();
+```
+
+## 🌐 API Integration
+
+### Supabase Services
+
+- **Database**: PostgreSQL with real-time subscriptions
+- **Storage**: Image upload and management
+- **Auth**: Custom vendor authentication system
+- **Real-time**: Live data synchronization
+
+### Data Flow
+
+1. **Fetch**: Initial data loading from Supabase
+2. **Subscribe**: Real-time subscription setup
+3. **Update**: Local state updates on changes
+4. **Sync**: Automatic data synchronization
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Real-time Not Working
+
+- Check Supabase real-time configuration
+- Verify subscription setup in providers
+- Ensure proper error handling
+
+#### Image Upload Failures
+
+- Verify Supabase storage bucket configuration
+- Check file size and type restrictions
+- Ensure proper storage policies
+
+#### Order Status Updates
+
+- Verify vendor ID matching
+- Check order status mapping
+- Ensure proper state management
+
+### Debug Mode
+
+```dart
+// Enable debug logging
+if (kDebugMode) {
+  print('Debug information');
+}
+```
+
+## 📈 Future Enhancements
+
+### Planned Features
+
+- **Push Notifications**: Order status updates
+- **Payment Integration**: Online payment processing
+- **Customer Accounts**: Order history and preferences
+- **Driver App**: Delivery tracking and management
+- **Advanced Analytics**: Business intelligence dashboard
+- **Multi-language Support**: Internationalization
+
+### Technical Improvements
+
+- **Offline Support**: Local data caching
+- **Performance Monitoring**: App performance analytics
+- **Automated Testing**: CI/CD pipeline
+- **Code Generation**: Build-time optimizations
+
+## 🤝 Contributing
+
+### Development Guidelines
+
+1. **Code Style**: Follow Dart/Flutter conventions
+2. **Architecture**: Maintain clean architecture principles
+3. **Testing**: Write tests for new features
+4. **Documentation**: Update docs for API changes
+
+### Pull Request Process
+
+1. Fork the repository
+2. Create feature branch
+3. Make changes with tests
+4. Submit pull request
+5. Code review and merge
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Flutter Team**: For the amazing framework
+- **Supabase**: For the backend infrastructure
+- **Riverpod**: For state management solutions
+- **Community**: For feedback and contributions
+
+## 📞 Support
+
+For support and questions:
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/dine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/dine/discussions)
+- **Email**: support@dineapp.com
+
+---
+
+**Built with ❤️ using Flutter and Supabase**
