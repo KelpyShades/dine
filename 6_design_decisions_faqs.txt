@@ -1,0 +1,146 @@
+DESIGN DECISIONS AND FREQUENTLY ASKED QUESTIONS
+====================================================
+
+This document explains the key design decisions made during the development of the Dine food ordering app and answers common questions about our approach.
+
+PAYMENT AND FINANCIAL DECISIONS
+===============================
+
+Q: Why did you choose "Pay on Delivery" instead of online payments?
+A: Simple - customers pay when they get their food. This way:
+   - Customers trust the system more
+   - No worry about losing money online
+   - Local businesses like cash payments
+   - Customers feel safer
+
+Q: Doesn't this create problems with fake orders?
+A: No, because vendors call customers to confirm orders first. This stops fake orders.
+
+USER ACCOUNT AND REGISTRATION DECISIONS
+=======================================
+
+Q: Why don't customers need to create accounts?
+A: To make ordering super easy and fast:
+   - No passwords to remember
+   - Order right away without signing up
+   - People like quick ordering
+   - We only ask for details when placing an order
+
+Q: Why can't vendors register themselves? Why do they need admin to give them codes?
+A: We want only good, real businesses on our platform:
+   - Stops fake food sellers from joining
+   - We check if businesses are real first
+   - Protects customers from bad vendors
+   - Keeps food quality high
+
+COMMUNICATION AND NOTIFICATION DECISIONS
+========================================
+
+Q: Why do vendors call customers instead of sending emails or SMS?
+A: Phone calls work better:
+   - Emails might go to spam folder
+   - Can talk about order details right away
+   - Builds friendship between vendor and customer
+   - Solves problems immediately
+   - Everyone answers phone calls
+
+Q: How do customers track their orders without automated tracking?
+A: Vendors call customers with updates:
+   - Vendors tell customers when food will be ready
+   - Personal service is better than automated messages
+   - Vendors give real timing, not fake estimates
+   - Can explain any delays or changes
+
+PLATFORM AND TECHNICAL DECISIONS
+=================================
+
+Q: Why didn't you develop for iOS? Why only Android and Web?
+A: Android and Web reach more people faster:
+   - Most people use Android phones
+   - iPhone users can use the website
+   - iOS apps cost more money to make
+   - iOS apps take longer to approve
+   - Website works on any phone
+
+Q: Why use Flutter instead of native development?
+A: Flutter lets us build one app that works everywhere:
+   - Write code once, works on Android and Web
+   - Faster and cheaper to build
+   - App looks the same everywhere
+
+BUSINESS MODEL DECISIONS
+========================
+
+Q: Why focus on local vendors instead of big restaurant chains?
+A: We want to help small local businesses:
+   - Small restaurants need more help than big chains
+   - Supports our local community
+   - Better personal service
+   - Easier to work with local businesses
+
+Q: How does the app make money without charging customers?
+A: Vendors pay small fees:
+   - Small commission from vendor sales
+   - Vendors make more money, so they don't mind paying
+   - Focus on helping vendors first
+
+TECHNOLOGY AND COMPLEXITY DECISIONS
+===================================
+
+Q: Why use Supabase instead of building a custom backend?
+A: Supabase saves time and money:
+   - Ready-made database system
+   - Real-time updates work automatically
+   - Built-in security
+   - Don't need to build everything from scratch
+
+Q: Why keep the app simple instead of adding more features?
+A: Simple apps work better:
+   - Easy for vendors to learn
+   - Fewer bugs and problems
+   - Better user experience
+   - Faster to build and fix
+
+OPERATIONAL DECISIONS
+====================
+
+Q: What happens if vendors don't answer their phones?
+A: We have backup plans:
+   - Customers can call vendors directly
+   - Try calling multiple times
+   - Vendors know they must answer calls for business
+   - We track which vendors don't answer
+
+Q: How do you ensure food quality and safety?
+A: We check vendors before they join:
+   - Only approved businesses can sell food
+   - Customer complaints help us find bad vendors
+   - We talk directly with vendors about quality
+   - Vendors must follow health department rules
+
+Q: What if the app becomes very popular? Can it handle growth?
+A: Yes, our system can grow:
+   - Supabase handles many users automatically
+   - Simple design is easier to expand
+   - Vendors handle calls, not our servers
+   - Website can serve many people
+
+FUTURE CONSIDERATIONS
+====================
+
+Q: What features might you add in the future?
+A: Based on what users want:
+   - iPhone app if many people ask for it
+   - Customer ratings for vendors
+   - Simple order tracking messages
+   - Better reports for vendors
+   - Online payment options
+
+Q: How would you handle customer complaints?
+A: Multiple ways to solve problems:
+   - Customers call vendors directly first
+   - We step in for serious problems
+   - Bad vendors get removed from platform
+   - Personal talks solve most issues quickly
+
+This FAQ explains why we made certain choices that might seem different from other food delivery apps.
