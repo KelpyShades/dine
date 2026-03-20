@@ -29,17 +29,17 @@ jobs:
             ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
 
-      - name: Build APK
-        run: flutter build apk --release
+      # - name: Build APK
+      #   run: flutter build apk --release
 
       - name: Build Web
         run: flutter build web --release
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      # - name: Upload APK artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: app-apk
+      #     path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload Web artifact
         uses: actions/upload-artifact@v4
