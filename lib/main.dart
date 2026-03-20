@@ -15,8 +15,8 @@ Future<void> main() async {
   logger.initialize();
 
   await Supabase.initialize(
-    url: 'https://fhltqyclwtypzgjxsryj.supabase.co',
-    anonKey: 'sb_publishable_OjlJR0ALs8zZ7wVD_ijXiQ_V5ujbdFB',
+    url: 'https://fdbkqacscdgpvinrkxxy.supabase.co',
+    anonKey: 'sb_publishable_91MYgEDzYRAtkPnAIck73w_Z05MIuq7',
   );
 
   // Initialize real-time service after Supabase
